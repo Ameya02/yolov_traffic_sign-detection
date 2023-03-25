@@ -8,7 +8,7 @@ root = tk.Tk()
 import pathlib
 
 def checkfile(path):
-     path      = os.path.expanduser(path)
+     path = os.path.expanduser(path)
 
      if not os.path.exists(path):
         return path
@@ -28,13 +28,13 @@ eel.init('web')
 def obdetect():
     # This below line will reads the weights and config file and create the network
     # our TS model in V4 format
-    net = cv2.dnn.readNet('./data/ts-config.cfg', './data/ts-model.weights')
+    net = cv2.dnn.readNet('./data/ts_new.cfg', './data/ts_new_last.weights')
     # the below 2 line will used if our machine consist of Gpu if it consist the Gpu it will used to inecrease the framerate
     # and performance of our detectio
     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
-    with open("./data/ts.names", "r") as f:
+    with open("./data/ts_new.names", "r") as f:
         classes = f.read().splitlines()
 
     # the below statment will start our camera for detection
@@ -183,7 +183,7 @@ def viddetect():
             #elif cv2.getWindowProperty(window_name, cv2.WND_PROP_VISIBLE) < 1:
             #break
 
-        except AttributeError:
+        except [AttributeError, Exception ]:
             print("Video Processed")
             break
         
