@@ -1,2 +1,8 @@
 opencv-python
 eel[jinja2]
+eel
+numpy
+python-dotenv
+Pillow
+twillo
+easyocr
