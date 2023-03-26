@@ -3,6 +3,7 @@ import numpy as np
 import os 
 import eel
 from tkinter import filedialog
+from tkinter import messagebox
 import tkinter as tk
 root = tk.Tk()
 import pathlib
@@ -28,13 +29,13 @@ eel.init('web')
 def obdetect():
     # This below line will reads the weights and config file and create the network
     # our TS model in V4 format
-    net = cv2.dnn.readNet('./data/ts_new.cfg', './data/ts_new_last.weights')
+    net = cv2.dnn.readNet('./data/ts-config.cfg', './data/ts-model.weights')
     # the below 2 line will used if our machine consist of Gpu if it consist the Gpu it will used to inecrease the framerate
     # and performance of our detectio
     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
-    with open("./data/ts_new.names", "r") as f:
+    with open("./data/ts.names", "r") as f:
         classes = f.read().splitlines()
 
     # the below statment will start our camera for detection
@@ -51,8 +52,9 @@ def obdetect():
         _, img = cap.read()
         height, width, _ = img.shape
 
-        blob = cv2.dnn.blobFromImage(img, 1 / 255, (416, 416), (0, 0, 0), swapRB=True, crop=False)
+        blob = cv2.dnn.blobFromImage(img, 1 / 255, (320, 320), (0, 0, 0), swapRB=True, crop=False)
         net.setInput(blob)
+
         #gathering information from network and push to layers of object
         output_layers_names = net.getUnconnectedOutLayersNames()
         layerOutputs = net.forward(output_layers_names)
@@ -65,6 +67,7 @@ def obdetect():
         #get the confidence level ,class ids , bounding boxes
 
         for output in layerOutputs:
+
             for detection in output:
                 scores = detection[5:]
                 class_id = np.argmax(scores)
@@ -264,5 +267,5 @@ def imgdetect():
     cv2.destroyAllWindows()
 
 
-eel.start('index.html',size=(1000,700) , mode='default')
+eel.start('index.html',size=(1000,700) , mode='edge')
 

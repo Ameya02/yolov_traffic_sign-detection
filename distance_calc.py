@@ -7,9 +7,9 @@ import tkinter as tk
 from speedlimit import  read_speed_limit
 root = tk.Tk()
 root.withdraw()
-from alert_sms import sms_alert
+from alert_sms import *
 # Distance constants
-KNOWN_DISTANCE = 20  # CM
+KNOWN_DISTANCE = 20 # CM
 SIGN_WIDTH = 7.0  # CM
 SIGNAL_WIDTH = 7.0
 Distance_level = 0
@@ -204,7 +204,9 @@ while True:
                 if col=="red":
                     if averageSpeed < 10 and round(distance, 2) < 6:
                         messagebox.showwarning("Warning","Traffic Violated")
-                        sms_alert("Omkar Shinde","MH09AB6748","AB73789938HB","Stop Sign Broken")
+                        # sms_alert("ABC Mathur","MH09AB6748","AB73789938HB","Stop Sign Broken")
+                        sms_alert_twilio("ABC Mathur", "MH09AB6748", "AB73789938HB", "Stop Sign Broken")
+                        # sms_alert_f2sms("ABC Mathur", "MH09AB6748", "AB73789938HB", "Stop Sign Broken",7977508215,8082283288)
 
             elif class_names[class_ids[i]] == "trafficlight":
 
@@ -234,7 +236,7 @@ while True:
 
                 if averageSpeed < 10 and round(distance, 1) < 6 and stop_flag == False:
                     messagebox.showwarning("Warning","Traffic Violated")
-                    sms_alert("Omkar Shinde","MH09AB6748","AB73789938HB","Red Signal Broken")
+                    sms_alert("ABC Mathur","MH09AB6748","AB73789938HB","Red Signal Broken")
 
             elif class_names[class_ids[i]]=="speedlimit":
                 if speedlimit:

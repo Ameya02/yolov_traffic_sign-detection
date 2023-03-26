@@ -4,6 +4,8 @@ from twilio.rest import Client
 from dotenv import load_dotenv
 import datetime
 import requests
+import json
+
 
 import os
 tk.Tk().withdraw()
@@ -42,31 +44,33 @@ def sms_alert(name,license_plate,license_no,traffic_violation):
     )
 
 def sms_alert_twilio(name,license_plate,license_no,traffic_violation):
-    sms ="Dear "+ name +",\n"+" License plate "+license_plate + "\n"+" License No "+ license_no + "\n"+" You have violated the following traffic rules: \n" + traffic_violation +" @ " + random_location()
+    curr_time = datetime.datetime.now()
+    sms= "Dear "+ name +",\n" + " License plate "+license_plate + "\n"+ " License No "+ license_no + "\n"+ " You have violated the following traffic rules: \n" + traffic_violation + " @ " + random_location()+ "AT "+ curr_time.strftime("%c")
     account_sid = os.getenv("ACC_SID")
     auth_token = os.getenv("AUTH_TOKEN")
     client = Client(account_sid, auth_token)
 
-    # message = client.messages.create(
-    #     body=sms,
-    #     from_=os.getenv("TWILIO_NUMBER"),
-    #     to=os.getenv("MY_PHONE")
-    # )
-    # print(message.sid)
+    message = client.messages.create(
+        body=sms,
+        from_=os.getenv("TWILIO_NUMBER"),
+        to=os.getenv("MY_PHONE")
+    )
+    print(message.sid)
 
-def sms_alert_f2sms(name,license_plate,license_no,traffic_violation,mno,ph1,ph2):
+def sms_alert_f2sms(name,license_plate,license_no,traffic_violation,mno,ph1):
     url = "https://www.fast2sms.com/dev/bulkV2"
     curr_time = datetime.datetime.now()
     msg= "Dear "+ name +",\n" + " License plate "+license_plate + "\n"+ " License No "+ license_no + "\n"+ " You have violated the following traffic rules: \n" + traffic_violation + " @ " + random_location()+ "AT "+ curr_time.strftime("%c")
+
     querystring = {
-        "authorization": "API_KEY_OF_YOURS",
+        'authorization': os.getenv("AUTH_F2S"),
         "message": msg,
         "language": "english",
-        "route": "q",
-        "numbers": mno}
+        "route": "v3",
+        "numbers": str(mno)+","+str(ph1)}
 
     headers = {
-        'cache-control': "no-cache"
+    'Cache-Control': "no-cache"
     }
     try:
         response = requests.request("GET", url,

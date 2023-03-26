@@ -3,3 +3,7 @@
 *.cfg
 *.names
 results/output.mp4
+results/output.jpg
+results/output_0.jpeg
+results/output_1.jpeg
+.env

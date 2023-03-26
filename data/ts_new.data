@@ -1,0 +1,5 @@
+classes = 43
+train = /content/gdrive/MyDrive/Project/TS_Recognition/train.txt
+valid = /content/gdrive/MyDrive/Project/TS_Recognition/test.txt
+names = /content/gdrive/MyDrive/Project/TS_Recognition/classes.names
+backup = /content/gdrive/MyDrive/Project/TS_Recognition/backup
